@@ -1,0 +1,7 @@
+.card .vote-section i {
+  cursor: pointer;
+}
+
+.card .progress {
+  border-radius: 0;
+}

@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="ml-auto mr-auto col-10 col-lg-6">
+    <ng-container [ngSwitch]="state">
+
+      <!-- Loading a survey data -->
+      <ng-container *ngSwitchCase="-1">
+        <div class="col text-center">
+          <i class="fa fa-spinner fa-spin fa-4x align-self-center"></i>
+        </div>
+      </ng-container>
+
+      <!-- Showing init description -->
+      <ng-container *ngSwitchCase="0">
+        <div class="card">
+          <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
+          <div class="card-body">
+            <h5 class="card-title" *ngIf="current.title">{{current.title}}</h5>
+            <p class="card-text">
+              {{current.description}}
+            </p>
+            <button class="btn btn-primary" (click)="state = 1">Start</button>
+            <button class="btn">Abandon</button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Answering the questions -->
+      <ng-container *ngSwitchCase="1">
+        <div class="card">
+          <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar"
+                 [ngStyle]="{ width: getProgress() }"
+                 [attr.aria-valuenow]="currentQuestionIndex+1"
+                 [attr.aria-valuemin]="0"
+                 [attr.aria-valuemax]="current.questions.length"></div>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{currentQuestion.title}}</h5>
+            <p class="card-text">
+              {{currentQuestion.description}}
+            </p>
+            <div class="row vote-section">
+              <div class="col"></div>
+              <div class="col-2"><i class="fa fa-battery-0 fa-2x" (click)="nextQuestion(-2)"></i></div>
+              <div class="col-2"><i class="fa fa-battery-1 fa-2x" (click)="nextQuestion(-1)"></i></div>
+              <div class="col-2"><i class="fa fa-battery-2 fa-2x" (click)="nextQuestion(-0)"></i></div>
+              <div class="col-2"><i class="fa fa-battery-3 fa-2x" (click)="nextQuestion(1)"></i></div>
+              <div class="col-2"><i class="fa fa-battery-4 fa-2x" (click)="nextQuestion(2)"></i></div>
+              <div class="col"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Thanks and Bye! -->
+      <ng-container *ngSwitchCase="2">
+        <div class="card">
+          <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
+          <div class="card-body text-center">
+            <h5 class="card-title" *ngIf="current.title">{{current.title}}</h5>
+            <p class="card-text text-center">
+              Thank you for completing the survey!
+            </p>
+            <button class="btn btn-primary" [disabled]="saving">
+              <ng-container *ngIf="saving">
+                <i class="fa fa-spinner fa-spin"></i>&nbsp;
+                Saving ...
+              </ng-container>
+              <ng-container *ngIf="!saving">Close</ng-container>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+    </ng-container>
+  </div>
+</div>
