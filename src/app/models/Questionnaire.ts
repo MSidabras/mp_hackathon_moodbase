@@ -5,8 +5,10 @@ export class Questionnaire {
   questions: Array<Question>;
   title?: string;
   description?: string;
-  userToken?: string;
   image?: string;
+
+  userToken?: string;
+  teamId?: string;
 
   constructor(init?: Partial<Questionnaire>) {
     init && Object.assign(this, init);

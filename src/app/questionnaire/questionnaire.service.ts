@@ -30,7 +30,7 @@ export class QuestionnaireService extends AbstractHttpService {
    * @param id
    * @param userToken Some unique value to determine the Questionnaire is already finished by the User
    */
-  getQuestionnaire(id: string, userToken: string): Observable<Questionnaire> {
+  public getQuestionnaire(id: string, userToken: string): Observable<Questionnaire> {
     return this.localStorage.getItem<Array<string>>(FINISHED_SURVEYS)
       .pipe(
         flatMap((list: Array<string>) => {
@@ -71,7 +71,9 @@ export class QuestionnaireService extends AbstractHttpService {
     return of(q).pipe(delay(2000));
   }
 
-  saveAnswers(data: Questionnaire, userToken: string): Observable<boolean> {
+  public saveAnswers(data: Questionnaire, userToken: string, teamId: string): Observable<boolean> {
+    data.teamId = teamId;
+
     return this.saveMockAnswers(data, userToken)
       .pipe(
         tap(result => {
@@ -90,6 +92,17 @@ export class QuestionnaireService extends AbstractHttpService {
     /*return this.http.post(this.getUrl(globalConfig.api.saveQuestionnaire), data)
       .pipe(
         map(result => true),
+        tap(result => {
+          this.localStorage.getItem<Array<string>>(FINISHED_SURVEYS)
+            .subscribe((list: Array<string>) => {
+              list = list || new Array<string>();
+              list.push(data.id);
+
+              this.localStorage.setItem(FINISHED_SURVEYS, list).subscribe(() => {
+                console.info("Finished surveys list is updated");
+              });
+            })
+        }),
         catchError(this.handlerError)
       );*/
   }

@@ -18,8 +18,26 @@
             <p class="card-text">
               {{current.description}}
             </p>
-            <button class="btn btn-primary" (click)="state = 1">Start</button>
+            <button class="btn btn-primary" (click)="state = 0.5">Start</button>
             <button class="btn">Abandon</button>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Project selection -->
+      <ng-container *ngSwitchCase="0.5">
+        <div class="card">
+          <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
+          <div class="card-body">
+            <h5 class="card-title">Select your Team</h5>
+
+            <div class="form-group">
+              <select class="form-control" #teamSelectControl>
+                <option *ngFor="let team of teams" value="{{team.value}}">{{team.title}}</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary" (click)="startSurvey(teamSelectControl.value)">Start a survey</button>
           </div>
         </div>
       </ng-container>

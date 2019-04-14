@@ -7,6 +7,7 @@ export const globalConfig = {
 
   api: {
     getQuestionnaire: `${baseConfig.baseUrl}/survey/{id}`,
-    saveQuestionnaire: `${baseConfig.baseUrl}/survey-result`
+    saveQuestionnaire: `${baseConfig.baseUrl}/survey-result`,
+    getTeams: `${baseConfig.baseUrl}/projects`
   }
 };
