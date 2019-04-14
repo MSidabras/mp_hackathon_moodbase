@@ -73,6 +73,19 @@
         </div>
       </ng-container>
 
+      <!-- Duplicate survey passing -->
+      <ng-container *ngSwitchCase="3">
+        <div class="card">
+          <img src="/assets/no_duplicates.jpg" class="card-img-top" alt="Duplicate Questionnaire!">
+          <div class="card-body text-center">
+            <p class="card-text text-center">
+              Sorry, but the survey has already finished!
+            </p>
+            <button class="btn btn-primary">Close</button>
+          </div>
+        </div>
+      </ng-container>
+
     </ng-container>
   </div>
 </div>

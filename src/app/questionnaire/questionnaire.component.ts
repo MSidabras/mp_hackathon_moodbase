@@ -27,10 +27,15 @@ export class QuestionnaireComponent implements OnInit {
     let surveyId = this.route.snapshot.paramMap.get('id');
     this.questionnaireService.getQuestionnaire(surveyId.toString(), "random-token")
       .subscribe(q => {
-        this.current = q;
-        this.currentQuestionIndex = 0;
-        this.currentQuestion = this.current.questions[this.currentQuestionIndex];
-        this.state = 0;
+        if (q) {
+          this.current = q;
+          this.currentQuestionIndex = 0;
+          this.currentQuestion = this.current.questions[this.currentQuestionIndex];
+          this.state = 0;
+        } else {
+          this.current = null;
+          this.state = 3;
+        }
       });
   }
 

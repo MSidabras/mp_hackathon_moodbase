@@ -3,17 +3,24 @@ import { Observable } from "rxjs";
 import { Questionnaire } from "../models/Questionnaire";
 import { Question } from "../models/Question";
 import { of } from "rxjs/internal/observable/of";
-import { catchError, delay, map } from "rxjs/operators";
+import { catchError, delay, flatMap, map } from "rxjs/operators";
 import { AbstractHttpService } from "../abstract-http-service";
 import { HttpClient } from "@angular/common/http";
 import { globalConfig } from "../global.config";
+import { LocalStorage } from "@ngx-pwa/local-storage";
+import { tap } from "rxjs/internal/operators/tap";
+
+const FINISHED_SURVEYS = "finishedSurveys";
 
 @Injectable({
   providedIn: 'root'
 })
 export class QuestionnaireService extends AbstractHttpService {
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private localStorage: LocalStorage
+  ) {
     super();
   }
 
@@ -24,16 +31,26 @@ export class QuestionnaireService extends AbstractHttpService {
    * @param userToken Some unique value to determine the Questionnaire is already finished by the User
    */
   getQuestionnaire(id: string, userToken: string): Observable<Questionnaire> {
-    return this.getMockQuestionnaire(id, userToken);
-
-    /*const params = new Map<string, string>();
-    params.set("id", id);
-
-    return this.http.get<Questionnaire>(this.getUrl(globalConfig.api.getQuestionnaire, params))
+    return this.localStorage.getItem<Array<string>>(FINISHED_SURVEYS)
       .pipe(
-        map(result => new Questionnaire(result)),
-        catchError(this.handlerError)
-      );*/
+        flatMap((list: Array<string>) => {
+          if (list && list.length > 0 && list.find(q => q === id)) {
+            return of(null);
+          } else {
+
+            return this.getMockQuestionnaire(id, userToken);
+
+            /*const params = new Map<string, string>();
+            params.set("id", id);
+
+            return this.http.get<Questionnaire>(this.getUrl(globalConfig.api.getQuestionnaire, params))
+              .pipe(
+                map(result => new Questionnaire(result)),
+                catchError(this.handlerError)
+              );*/
+          }
+        })
+      );
   }
 
   private getMockQuestionnaire(id: string, userToken: string): Observable<Questionnaire> {
@@ -55,7 +72,20 @@ export class QuestionnaireService extends AbstractHttpService {
   }
 
   saveAnswers(data: Questionnaire, userToken: string): Observable<boolean> {
-    return this.saveMockAnswers(data, userToken);
+    return this.saveMockAnswers(data, userToken)
+      .pipe(
+        tap(result => {
+          this.localStorage.getItem<Array<string>>(FINISHED_SURVEYS)
+            .subscribe((list: Array<string>) => {
+              list = list || new Array<string>();
+              list.push(data.id);
+
+              this.localStorage.setItem(FINISHED_SURVEYS, list).subscribe(() => {
+                console.info("Finished surveys list is updated");
+              });
+            })
+        })
+      );
 
     /*return this.http.post(this.getUrl(globalConfig.api.saveQuestionnaire), data)
       .pipe(
