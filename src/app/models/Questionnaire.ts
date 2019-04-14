@@ -8,7 +8,7 @@ export class Questionnaire {
   image?: string;
 
   userToken?: string;
-  teamId?: string;
+  projectId?: string;
 
   constructor(init?: Partial<Questionnaire>) {
     init && Object.assign(this, init);

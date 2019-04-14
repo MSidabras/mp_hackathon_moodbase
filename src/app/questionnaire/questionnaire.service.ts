@@ -57,6 +57,7 @@ export class QuestionnaireService extends AbstractHttpService {
     let q = new Questionnaire({
       id: id,
       userToken: null,
+      title: "Mediapark Hackathon 2019 survey",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt euismod semper. In hac habitasse platea dictumst. Suspendisse non pretium tortor. Donec id nulla finibus eros eleifend tincidunt. Pellentesque fermentum pretium eleifend. Etiam dui mi, eleifend id ante mollis, vulputate euismod metus. Praesent porttitor eros sit amet nisl consequat, cursus interdum nunc iaculis. Sed bibendum euismod varius. Duis lacinia ante vel risus pretium commodo. Suspendisse in ultrices risus. Aliquam scelerisque interdum felis, eu porta lectus aliquet ut. Phasellus ut tempor dui, ornare ultricies elit. Sed quis orci eu ipsum bibendum ullamcorper.",
       questions: [
         new Question({ id: 1, title: "What do you think about topic 1?", description: "Topic 1. Aliquam scelerisque interdum felis, eu porta lectus aliquet ut. Phasellus ut tempor dui, ornare ultricies elit. Sed quis orci eu ipsum bibendum ullamcorper."}),
@@ -64,15 +65,14 @@ export class QuestionnaireService extends AbstractHttpService {
         new Question({ id: 3, title: "What do you think about topic 3?", description: "Topic 3. Aliquam scelerisque interdum felis, eu porta lectus aliquet ut. Phasellus ut tempor dui, ornare ultricies elit. Sed quis orci eu ipsum bibendum ullamcorper."}),
         new Question({ id: 4, title: "What do you think about topic 4?", description: "Topic 4. Aliquam scelerisque interdum felis, eu porta lectus aliquet ut. Phasellus ut tempor dui, ornare ultricies elit. Sed quis orci eu ipsum bibendum ullamcorper."}),
         new Question({ id: 5, title: "What do you think about topic 5?", description: "Topic 5. Aliquam scelerisque interdum felis, eu porta lectus aliquet ut. Phasellus ut tempor dui, ornare ultricies elit. Sed quis orci eu ipsum bibendum ullamcorper."})
-      ],
-      image: "https://i.ytimg.com/vi/gUIJ-UkQsXI/maxresdefault.jpg"
+      ]
     });
 
     return of(q).pipe(delay(2000));
   }
 
   public saveAnswers(data: Questionnaire, userToken: string, teamId: string): Observable<boolean> {
-    data.teamId = teamId;
+    data.projectId = teamId;
 
     return this.saveMockAnswers(data, userToken)
       .pipe(

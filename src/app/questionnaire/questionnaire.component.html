@@ -11,52 +11,56 @@
 
       <!-- Showing init description -->
       <ng-container *ngSwitchCase="0">
-        <div class="card">
+        <div class="card intro-card content-container">
           <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
           <div class="card-body">
-            <h5 class="card-title" *ngIf="current.title">{{current.title}}</h5>
+            <h3 class="card-title font-weight-bold" *ngIf="current.title">{{current.title}}</h3>
             <p class="card-text">
               {{current.description}}
             </p>
-            <button class="btn btn-primary" (click)="state = 0.5">Start</button>
-            <button class="btn">Abandon</button>
+            <p class="card-text survey-progress mt-3 mb-5">
+              Number of questions: {{current.questions.length}}
+            </p>
           </div>
+          <button class="btn btn-block button-start pt-3 pb-3" (click)="state = 0.5">Let's start</button>
         </div>
       </ng-container>
 
       <!-- Project selection -->
       <ng-container *ngSwitchCase="0.5">
-        <div class="card">
+        <div class="card content-container content-container-questions">
           <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
           <div class="card-body">
-            <h5 class="card-title">Select your Team</h5>
+            <h5 class="card-title survey-title mb-5">{{current.title}}</h5>
 
+            <h5 class="card-title text-white">Select your Team</h5>
             <div class="form-group">
-              <select class="form-control" #teamSelectControl>
-                <option *ngFor="let team of teams" value="{{team.value}}">{{team.title}}</option>
+              <select class="form-control pt-2 pb-2" #teamSelectControl (change)="teamId = teamSelectControl.value">
+                <option value=""></option>
+                <option *ngFor="let team of teams" value="{{team.id}}">{{team.title}}</option>
               </select>
             </div>
 
-            <button class="btn btn-primary" (click)="startSurvey(teamSelectControl.value)">Start a survey</button>
+            <button class="btn btn-block button-start pt-3 pb-3 mt-5"
+                    (click)="startSurvey(teamSelectControl.value)"
+                    [disabled]="!teamId">Continue</button>
           </div>
         </div>
       </ng-container>
 
       <!-- Answering the questions -->
       <ng-container *ngSwitchCase="1">
-        <div class="card">
+        <div class="card content-container content-container-questions">
           <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar"
-                 [ngStyle]="{ width: getProgress() }"
-                 [attr.aria-valuenow]="currentQuestionIndex+1"
-                 [attr.aria-valuemin]="0"
-                 [attr.aria-valuemax]="current.questions.length"></div>
-          </div>
           <div class="card-body">
-            <h5 class="card-title">{{currentQuestion.title}}</h5>
+            <h5 class="card-title survey-title mb-5">{{current.title}}</h5>
+
+            <h5 class="card-title">
+              <span class="current-step">#{{currentQuestionIndex + 1}}</span>
+              <span class="total-steps">/{{current.questions.length}}</span>
+            </h5>
             <p class="card-text">
-              {{currentQuestion.description}}
+              {{currentQuestion.title}}
             </p>
             <div class="row vote-section justify-content-center">
               <div class="col-2"><i class="fa fa-battery-0 fa-2x" (click)="nextQuestion(-2)"></i></div>
@@ -71,7 +75,7 @@
 
       <!-- Thanks and Bye! -->
       <ng-container *ngSwitchCase="2">
-        <div class="card">
+        <div class="card content-container">
           <img [src]="current.image" *ngIf="current.image" class="card-img-top" alt="Questionnaire {{current.id}}">
           <div class="card-body text-center">
             <h5 class="card-title" *ngIf="current.title">{{current.title}}</h5>
@@ -91,7 +95,7 @@
 
       <!-- Duplicate survey passing -->
       <ng-container *ngSwitchCase="3">
-        <div class="card">
+        <div class="card content-container">
           <img src="/assets/no_duplicates.jpg" class="card-img-top" alt="Duplicate Questionnaire!">
           <div class="card-body text-center">
             <p class="card-text text-center">

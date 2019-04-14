@@ -1,7 +1,86 @@
+.content-container {
+  background: linear-gradient(136.92deg, #2B1446 0%, #150527 98.88%);
+  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+
+  padding: 60px;
+}
+
+.content-container-questions {
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
+
+.card {
+  font-family: SF Mono, serif;
+}
+
+.card-text {
+  font-family: SF Mono, serif;
+  color: #ffffff;
+}
+
 .card .vote-section i {
   cursor: pointer;
 }
 
 .card .progress {
   border-radius: 0;
+}
+
+.card.intro-card .card-title {
+  color: #02F578;
+}
+
+.survey-progress {
+  font-size: 14pt;
+  color: #02F578;
+}
+
+.button-start {
+  background: linear-gradient(97.95deg, #FF4932 0.33%, #F8266B 99.67%);
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.button-start:disabled {
+  background: linear-gradient(97.95deg, #24103C 0.33%, #1E0737 99.67%);
+}
+
+.card-title.survey-title {
+  font-size: 12pt;
+  color: #02F578;
+}
+
+.content-container select {
+  border: 1px solid #8059B2;
+  border-radius: 8px;
+  color: #02F578;
+  height: 50px;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #291145 url("/assets/select-arrow.svg") no-repeat;
+  background-position-y: center;
+  background-position-x: 95%;
+}
+
+.content-container select:focus {
+  border: 1px solid #02F578;
+  box-shadow: 0px 0px 5px #02F578, 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background: #291145 url("/assets/select-arrow-active.svg") no-repeat;
+  background-position-y: center;
+  background-position-x: 95%;
+}
+
+.current-step {
+  color: #02F578;
+}
+
+.total-steps {
+  color: #412563;
 }
